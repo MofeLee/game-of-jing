@@ -38,6 +38,24 @@
         }
       }
 
+      var $$ = function(str){
+        var re =  /^(#|\.)?([a-z]+)$/;
+        var result = re.exec(str);
+        switch (result[1]) {
+          case undefined:
+            return document.getElementsByTagName(result[2]);
+            break;
+          case '#':
+            return document.getElementById(result[2]);
+            break;
+          case '.':
+            return document.getElementsByClassName(result[2]);
+            break;
+          default:
+          alert('error');
+        }
+      }
+
     </script>
   </body>
 </html>

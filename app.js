@@ -6,7 +6,7 @@ var config = {
   blockSize: 50, // 方块大小 单位px
   blockMargin: 5, // 边距 单位px
   blockOptionStyles: { //方块的风格
-    'background-color': '#DDD',
+    'background-color': '#CCC',
   },
   black: '●',
   white: '○'
@@ -72,6 +72,8 @@ function createBlock(size, margin, styles) {
 
   // 设置功能
   block.onclick = dropCheeseman;
+  block.onmouseenter = onMouseEnterBlock;
+  block.onmouseleave = onMouseLeaveBlock;
 
   return block;
 }
@@ -105,6 +107,13 @@ function dropCheeseman() {
 
   // 切换黑白棋子
   state.isWhite = !state.isWhite;
+}
+
+function onMouseEnterBlock(){
+  this.style['background-color'] = '#EEE';
+}
+function onMouseLeaveBlock(){
+  this.style['background-color'] = config.blockOptionStyles['background-color'];
 }
 
 // 判断胜负
@@ -185,6 +194,7 @@ function resetGame(){
     eles.blocks[i+1].innerText = '';
   }
   state.cheesemanCount = 0;
+  state.isWhite = true;
 }
 
 ////// helper方法

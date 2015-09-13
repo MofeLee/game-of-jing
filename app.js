@@ -166,6 +166,7 @@ function isMaxCheesemanCount(){
   state.maxCheesemanCount = maxCheesemanCount;
   if(state.cheesemanCount >= maxCheesemanCount){
     alert('棋盘已满，游戏结束');
+    resetGame();
   }
 }
 

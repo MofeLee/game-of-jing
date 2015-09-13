@@ -19,5 +19,25 @@
     <button onclick="resetGame()">重新开始</button>
 
     <script src="app.js" charset="utf-8"></script>
+    <script type="text/javascript">
+    // 简单实现的css选择器， 可以选择id class tag
+      var $ = function(str){
+        var strArr;
+        strArr = str.split('#');
+        if(strArr.length == 2){
+          return document.getElementById(strArr[1]);
+        }
+
+        strArr = str.split('.');
+        if(strArr.length == 2){
+          return document.getElementsByClassName(strArr[1]);
+        }
+
+        if(strArr.length == 1){
+          return document.getElementsByTagName(strArr[0]);
+        }
+      }
+
+    </script>
   </body>
 </html>

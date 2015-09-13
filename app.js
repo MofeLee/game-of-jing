@@ -4,9 +4,15 @@ var config = {
   // block设置
   blockSize: 50, // 方块大小 单位px
   blockMargin: 5, // 边距 单位px
-  blockOptionStyles: {  //方块的风格
+  blockOptionStyles: { //方块的风格
     'background-color': '#DDD',
-  }
+  },
+  black: '●',
+  white: '○'
+};
+
+var state =  {
+  isWhite: true
 };
 
 var eles = {
@@ -18,26 +24,16 @@ var eles = {
 function load() {
   settingUpGame(eles.game, config);
 
-  var block = createBlock(config.blockSize,config.blockMargin, config.blockOptionStyles);
-  var block2 = createBlock(config.blockSize,config.blockMargin, config.blockOptionStyles);
-  var block3 = createBlock(config.blockSize,config.blockMargin, config.blockOptionStyles);
-  var block4 = createBlock(config.blockSize,config.blockMargin, config.blockOptionStyles);
-  var block5 = createBlock(config.blockSize,config.blockMargin, config.blockOptionStyles);
-  var block6 = createBlock(config.blockSize,config.blockMargin, config.blockOptionStyles);
-  var block7 = createBlock(config.blockSize,config.blockMargin, config.blockOptionStyles);
-  var block8 = createBlock(config.blockSize,config.blockMargin, config.blockOptionStyles);
-  var block9 = createBlock(config.blockSize,config.blockMargin, config.blockOptionStyles);
-  var block1 = createBlock(config.blockSize,config.blockMargin, config.blockOptionStyles);
-  game.appendChild(block);
-  game.appendChild(block2);
-  game.appendChild(block3);
-  game.appendChild(block4);
-  game.appendChild(block5);
-  game.appendChild(block6);
-  game.appendChild(block7);
-  game.appendChild(block8);
-  game.appendChild(block9);
-  game.appendChild(block1);
+  for (var i = 0; i < config.blocksNum; i++) {
+    for (var j = 0; j < config.blocksNum; j++) {
+      var block = createBlock(config.blockSize,
+        config.blockMargin,
+        config.blockOptionStyles);
+      block.position = [i, j];
+      game.appendChild(block);
+    }
+  }
+
 }
 
 window.onload = load;
@@ -45,33 +41,46 @@ window.onload = load;
 /////// 封装后的工具方法
 
 //初始化一些配置
-function settingUpGame(gameEle, config){
+function settingUpGame(gameEle, config) {
 
-  var blockSpaceWidth =   // 每个方块占用的空间
-          (config.blockMargin * 2) + config.blockSize;
-  var gamePanelWidth =          // 每个方块占用的空间乘以方块数量
-          blockSpaceWidth * config.blocksNum;
+  var blockSpaceWidth = // 每个方块占用的空间
+    (config.blockMargin * 2) + config.blockSize;
+  var gamePanelWidth = // 每个方块占用的空间乘以方块数量
+    blockSpaceWidth * config.blocksNum;
   // 防止因为屏幕缩小导致游戏方块被推下
   gameEle.style['min-width'] = gamePanelWidth + 'px';
   // 下推元素以排列成3*3的网格
-  gameEle.style.width =  gamePanelWidth + 'px';
+  gameEle.style.width = gamePanelWidth + 'px';
   // 切掉多余的元素
-  gameEle.style.height =  gamePanelWidth + 'px';
+  gameEle.style.height = gamePanelWidth + 'px';
 }
 
 // 创建放置游戏用的方块
 function createBlock(size, margin, styles) {
   var block = document.createElement('div');
 
-  // 设置类
-  block.className = 'block';
   // 设置block的样式
+  block.className = 'block';
   block.style.height = size + 'px';
   block.style.width = size + 'px';
   block.style.margin = margin + 'px';
+  block.style['line-height'] = size + 'px';
   extend(block.style, styles);
 
+  // 设置功能
+  block.onclick = dropCheeseman;
+
   return block;
+}
+
+function dropCheeseman() {
+  if(state.isWhite){
+    this.innerText = config.white;
+  } else {
+    this.innerText = config.black;
+  }
+  state.isWhite = !state.isWhite;
+  
 }
 
 ////// helper方法

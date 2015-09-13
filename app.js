@@ -99,37 +99,46 @@ function dropCheeseman() {
     return;
   }
 
+  // 判断是否超出棋盘
   state.cheesemanCount++;
   isMaxCheesemanCount();
 
+  // 切换黑白棋子
   state.isWhite = !state.isWhite;
 }
 
+// 判断胜负
 function isWin(that){
   var cheeseman = that.innerText;
   if (match3x3Pattern(cheeseman)){
       return true;
   }
-
   return false;
 }
 
 // 临时算法,如果有时间可以改进 穷举8种情况
 function match3x3Pattern(cheeseman){
+  // 测试是否为3x3
+  if(config.blocksNum!= 3){
+    alert('此数量的block不能使用此算法');
+    resetGame();
+  }
+
   var winPosition = [
-    [[0,0], [0,1], [0,2]],
+    [[0,0], [0,1], [0,2]], // 匹配横向的三种情况
     [[1,0], [1,1], [1,2]],
     [[2,0], [2,1], [2,2]],
 
-    [[0,0], [1,0], [2,0]],
+    [[0,0], [1,0], [2,0]], // 匹配纵向的三种情况
     [[0,1], [1,1], [2,1]],
     [[0,2], [1,2], [2,2]],
 
-    [[0,0], [1,1], [2,2]],
+    [[0,0], [1,1], [2,2]], // 匹配对角线的两种情况
     [[0,2], [1,1], [2,0]]
   ];
   for(var posIndex in winPosition){
     var posArray = winPosition[posIndex];
+
     if(match3Position(cheeseman, posArray)){
       return true;
     }
@@ -137,7 +146,7 @@ function match3x3Pattern(cheeseman){
   return false;
 }
 
-// example: matchPosition(black, [[1,1], [1,2], [1,3]])
+// 匹配三个位置 example: matchPosition(black, [[1,1], [1,2], [1,3]])
 function match3Position(cheeseman, poses){
   var mp = matchPosition;
   if (mp(cheeseman, poses[0])
@@ -148,13 +157,14 @@ function match3Position(cheeseman, poses){
   return false;
 }
 
+// 匹配单个位置
 function matchPosition(cheeseman, pos){
   var block = eles.blocks[getCheeseIndex(pos)];
 
   return block.innerText === cheeseman;
-
 }
 
+// 根据坐标算出棋子的位置
 function getCheeseIndex(pos){
   var index = pos[0] * config.blocksNum + pos[1];
   return index + 1; // offset 1

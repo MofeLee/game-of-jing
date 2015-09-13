@@ -27,8 +27,8 @@ function load() {
   for (var i = 0; i < config.blocksNum; i++) {
     for (var j = 0; j < config.blocksNum; j++) {
       var block = createBlock(config.blockSize,
-        config.blockMargin,
-        config.blockOptionStyles);
+                              config.blockMargin,
+                              config.blockOptionStyles);
       block.position = [i, j];
       game.appendChild(block);
     }
@@ -74,13 +74,20 @@ function createBlock(size, margin, styles) {
 }
 
 function dropCheeseman() {
+  // 判断是否已有棋子
+  if(this.innerText){
+    alert('此处已放置棋子');
+    return;
+  }
+
+  // 放置棋子
   if(state.isWhite){
     this.innerText = config.white;
   } else {
     this.innerText = config.black;
   }
+
   state.isWhite = !state.isWhite;
-  
 }
 
 ////// helper方法
